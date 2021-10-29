@@ -1,4 +1,4 @@
-You will need to create a config.py containing an API key for TMDB
+You will need to create a config.py containing an API key and access token for TMDB
 
 These can be obtained at https://www.themoviedb.org/
 
