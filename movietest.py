@@ -1,4 +1,4 @@
-import requests
+from pip._vendor import requests
 import json
 from config import *
 from random import randint
@@ -21,27 +21,31 @@ class Game:
 
 		print("\nSorted films...")
 
-	def get_director(self):
+	def get_director_and_film(self):
 		
 		print("\nGetting Director")
+		info = []
 
 		# Get a random director from the list of film IDs
 		j = randint(0,len(self._filmIds) - 1)
-		director = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + '/credits?api_key=' + self._apiKey 
+		credits = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + "/credits?api_key=" + self._apiKey 
+		movie = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + "/?api_key=" + self._apiKey + "&language=en-US"
 
 		# Loop through the credits until the director is found
 		for i in range(30):
 
-			if requests.get(director).json()['crew'][i]['job'] == 'Director':
+			if requests.get(credits).json()['crew'][i]['job'] == 'Director':
 
-				director = requests.get(director).json()['crew'][i]['name']
-				return director
+				info.append(requests.get(credits).json()['crew'][i]['name'])
+			
+			info.append(requests.get(movie).json()['original_title'])
+			return info
 
 	def play(self):
 
-		print("\nGame running...")
-		director = self.get_director()
-		print("\nDirector: " + director)
+		info = self.get_director_and_film()
+		print("\nDirector: " + info[0])
+		print("\nTitle: " + info[1])
 
 
 print("\nInitialising...")
