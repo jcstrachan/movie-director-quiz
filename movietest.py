@@ -29,7 +29,7 @@ class Game:
 		# Get a random director from the list of film IDs
 		j = randint(0,len(self._filmIds) - 1)
 		credits = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + "/credits?api_key=" + self._apiKey 
-		movie = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + "/?api_key=" + self._apiKey + "&language=en-US"
+		movie = "https://api.themoviedb.org/3/movie/" + str(self._filmIds[j]) + "?api_key=" + self._apiKey
 
 		# Loop through the credits until the director is found
 		for i in range(30):
@@ -37,7 +37,7 @@ class Game:
 			if requests.get(credits).json()['crew'][i]['job'] == 'Director':
 
 				info.append(requests.get(credits).json()['crew'][i]['name'])
-			
+
 			info.append(requests.get(movie).json()['original_title'])
 			return info
 
